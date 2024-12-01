@@ -2,6 +2,7 @@ import { ProductLine, Invoice } from './types'
 
 export const initialProductLine: ProductLine = {
   description: '',
+  hsn:'',
   quantity: '1',
   rate: '0.00',
 }
@@ -27,12 +28,14 @@ export const initialInvoice: Invoice = {
   invoiceDueDateLabel: 'Due Date',
   invoiceDueDate: '',
   productLineDescription: 'Item Description',
+  productLineHsn: 'HSN/SAC1',
   productLineQuantity: 'Qty',
   productLineQuantityRate: 'Rate',
   productLineQuantityAmount: 'Amount',
   productLines: [
     {
       description: 'Brochure Design',
+      hsn:'997315',
       quantity: '2',
       rate: '100.00',
     },
@@ -40,7 +43,8 @@ export const initialInvoice: Invoice = {
     { ...initialProductLine },
   ],
   subTotalLabel: 'Sub Total',
-  taxLabel: 'Sale Tax (10%)',
+  taxLabel: 'CGST (9%)',
+  taxSGSTLabel :'SGST (9%)',
   totalLabel: 'TOTAL',
   currency: '$',
   notesLabel: 'Notes',

@@ -36,6 +36,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
   const [invoice, setInvoice] = useState<Invoice>(data ? { ...data } : { ...initialInvoice })
   const [subTotal, setSubTotal] = useState<number>()
   const [saleTax, setSaleTax] = useState<number>()
+  const [saleTaxSGST, setSaleTaxSGST] = useState<number>()
 
   const dateFormat = 'MMM dd, yyyy'
   const invoiceDate = invoice.invoiceDate !== '' ? new Date(invoice.invoiceDate) : new Date()
@@ -131,8 +132,24 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
     const saleTax = subTotal ? (subTotal * taxRate) / 100 : 0
 
     setSaleTax(saleTax)
+
+
+
   }, [subTotal, invoice.taxLabel])
 
+  useEffect(() => {
+    const match = invoice.taxSGSTLabel.match(/(\d+)%/)
+    const taxRate = match ? parseFloat(match[1]) : 0
+    
+    const saleTax = subTotal ? (subTotal * taxRate) / 100 : 0
+
+    setSaleTaxSGST(saleTax)
+
+
+    
+  }, [subTotal, invoice.taxSGSTLabel])
+
+  
   useEffect(() => {
     if (onChange) {
       onChange(invoice)
@@ -308,6 +325,14 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               pdfMode={pdfMode}
             />
           </View>
+          <View className="w-48 p-4-8" pdfMode={pdfMode}>
+            <EditableInput
+              className="white bold"
+              value={invoice.productLineHsn}
+              onChange={(value) => handleChange('productLineHsn', value)}
+              pdfMode={pdfMode}
+            />
+          </View>
           <View className="w-17 p-4-8" pdfMode={pdfMode}>
             <EditableInput
               className="white bold right"
@@ -346,6 +371,15 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   placeholder="Enter item name/description"
                   value={productLine.description}
                   onChange={(value) => handleProductLineChange(i, 'description', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-48 p-4-8 pb-10" pdfMode={pdfMode}>
+                <EditableInput
+                  className="dark"
+                  placeholder="Enter HSN/SAC No"
+                  value={productLine.hsn}
+                  onChange={(value) => handleProductLineChange(i, 'hsn', value)}
                   pdfMode={pdfMode}
                 />
               </View>
@@ -419,6 +453,20 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               <View className="w-50 p-5" pdfMode={pdfMode}>
                 <Text className="right bold dark" pdfMode={pdfMode}>
                   {saleTax?.toFixed(2)}
+                </Text>
+              </View>
+            </View>
+            <View className="flex" pdfMode={pdfMode}>
+              <View className="w-50 p-5" pdfMode={pdfMode}>
+                <EditableInput
+                  value={invoice.taxSGSTLabel}
+                  onChange={(value) => handleChange('taxSGSTLabel', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-50 p-5" pdfMode={pdfMode}>
+                <Text className="right bold dark" pdfMode={pdfMode}>
+                  {saleTaxSGST?.toFixed(2)}
                 </Text>
               </View>
             </View>

@@ -3,12 +3,14 @@ import { z, TypeOf } from 'zod'
 
 export interface ProductLine {
   description: string
+  hsn:string
   quantity: string
   rate: string
 }
 
 export const TProductLine = z.object({
   description: z.string(),
+  hsn:z.string(),
   quantity: z.string(),
   rate: z.string(),
 })
@@ -34,12 +36,14 @@ export const TInvoice = z.object({
   invoiceDueDateLabel: z.string(),
   invoiceDueDate: z.string(),
   productLineDescription: z.string(),
+  productLineHsn: z.string(),
   productLineQuantity: z.string(),
   productLineQuantityRate: z.string(),
   productLineQuantityAmount: z.string(),
   productLines: z.array(TProductLine),
   subTotalLabel: z.string(),
   taxLabel: z.string(),
+  taxSGSTLabel : z.string(),
   totalLabel: z.string(),
   currency: z.string(),
   notesLabel: z.string(),
